@@ -9,3 +9,38 @@ variable "ntier-vpc-range" {
   default = "192.168.0.0/16"
   description = "VPC cidr Range"
 }
+
+variable "ntier-subnet-cidr" {
+  type = list(string)
+  default = [ "192.168.0.0/24", "192.168.1.0/24", "192.168.2.0/24", "192.168.3.0/24" ]
+  
+}
+variable "ntier-app1-cidr" {
+  type = string
+  default = "192.168.0.0/24"
+}
+
+variable "ntier-app2-cidr" {
+  type = string
+  default = "192.168.1.0/24"
+}
+
+variable "ntier-db1-cidr" {
+  type = string
+  default = "192.168.2.0/24"
+}
+
+variable "ntier-db2-cidr" {
+  type = string
+  default = "192.168.3.0/24"
+}
+
+variable "first-az" {
+  type = string
+  default = "a"
+}
+
+variable "second-az" {
+  type = string
+  default = "b"
+}
