@@ -38,8 +38,26 @@ resource "aws_route_table" "public" {
   tags = {
     Name = "public"
   }
-  route = {
+  route {
     cidr_block = local.anywhere
+    gateway_id = aws_internet_gateway.ntier_igw.id
   }
   depends_on = [aws_subnet.subnets ]
 }
+
+data "aws_subnets" "public_subnets" {
+  vpc_id = local.vpc_id
+  filter {
+    name   = "tag:Name"
+    values = var.ntier_vpc_info.public_subnets
+  }
+  
+}
+resource "aws_route_table_association" "public_associations" {
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "private_associations" {
+  route_table_id = aws_route_table.private.id
+}
+
