@@ -9,7 +9,7 @@ resource "aws_vpc" "ntier" {
 resource "aws_subnet" "app1" {
   cidr_block = var.ntier_app1_cidr
   availability_zone = "{var.region}a"
-  vpc_id = aws_vpc.ntier.id
+  vpc_id = aws_vpc.ntier.id  #implicit
   depends_on = [ 
     aws_vpc.ntier
    ]
