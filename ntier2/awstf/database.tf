@@ -31,3 +31,20 @@ resource "aws_db_subnet_group" "ntier" {
   depends_on = [ aws_subnet.subnets ]
 }
 
+resource "aws_db_instance" "empdb" {
+  allocated_storage    = 20
+  db_name              = "employees"
+  db_subnet_group_name = "ntier"
+  engine = "mysql"
+  engine_version = "8.0.28"
+  instance_class = "db.t2.micro"
+  password = "rootroot"
+  username  = "admin"
+  publicly_accessible = false
+  vpc_security_group_ids = [ aws_security_group.db.id ]
+  skip_final_snapshot  = true
+  depends_on = [ 
+    aws_db_subnet_group.ntier,
+    awaws_security_group.db
+  ]
+}
