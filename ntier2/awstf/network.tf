@@ -50,19 +50,25 @@ resource "aws_route_table" "public" {
 }
 
 data "aws_subnets" "public" {
-  vpc_id = local.vpc_id
   filter {
     name = "tag:Name"
     values = var.ntier_vpc_info.public_subnets
+  }
+  filter {
+    name = "vpc-id"
+    values = [local.vpc_id]
   }
   depends_on = [ aws_subnet.subnets ]
 }
 
 data "aws_subnets" "private" {
-  vpc_id = local.vpc_id
   filter {
     name = "tag:Name"
     values = var.ntier_vpc_info.private_subnets
+  }
+   filter {
+    name = "vpc-id"
+    values = [local.vpc_id]
   }
   depends_on = [ aws_subnet.subnets ]
 }
