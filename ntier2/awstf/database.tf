@@ -25,8 +25,9 @@ data "aws_subnet" "db" {
   depends_on = [ aws_subnet.subnets ]
 }
 
-data "aws_db_subnet_group" "ntier" {
+resource "aws_db_subnet_group" "ntier" {
   name = "ntier"
   subnet_ids = data.aws_subnets.db.ids 
   depends_on = [ aws_subnet.subnets ]
 }
+
