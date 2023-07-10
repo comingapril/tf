@@ -49,8 +49,35 @@ resource "aws_route_table" "public" {
   depends_on = [ aws_subnet.subnets ]
 }
 
+data "aws_subnets" "public" {
+  vpc_id = local.vpc_id
+  filter {
+    name = "tag:Name"
+    values = var.ntier_vpc_info.public_subnets
+  }
+  depends_on = [ aws_subnet.subnets ]
+}
 
+data "aws_subnets" "private" {
+  vpc_id = local.vpc_id
+  filter {
+    name = "tag:Name"
+    values = var.ntier_vpc_info.private_subnets
+  }
+  depends_on = [ aws_subnet.subnets ]
+}
 
+resource "aws_route_table_association" "public_associations" {
+  count = length(data.aws_subnets.public.ids)
+  route_table_id = aws_route_table.public.id
+  subnet_id = data.aws_subnets.public.ids[count.index]
+}
+
+resource "aws_route_table_association" "private_associations" {
+  count = length(data.aws_subnets.private.ids)
+  route_table_id = aws_route_table.private.id
+  subnet_id = data.aws_subnets.private.ids[count.index]
+}
 
 
 
