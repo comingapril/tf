@@ -18,3 +18,15 @@ resource "aws_security_group" "web" {
   vpc_id = local.vpc_id
   depends_on = [ aws_subnet.subnets ]
 }
+
+data "aws_ami_ids" "ubuntu_22.04" {
+  owners = [ "099720109477" ]
+  filter {
+    name  = "description"
+    values = [ "Canonical, Ubuntu, 22.04 LTS, amd64 jammy image build on 2023-05-16" ]
+  }
+  filter {
+    name = "is-public"
+    values = ["true"]
+  }
+}
