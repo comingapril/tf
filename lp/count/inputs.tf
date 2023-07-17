@@ -5,8 +5,8 @@ variable "filenames" {
 
 variable "fileinfo" {
   type = map(object({
-    name = string
     content = string
+    name = string
   }))
   default = {
     "first" = {
