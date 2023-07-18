@@ -6,18 +6,24 @@ resource "aws_instance" "apache" {
   subnet_id = data.aws_subnet.first.id
   user_data = file("apache.sh")
   vpc_security_group_ids = ["sg-03d0b2194da305f89"]
+  
+}
+
+resource "null_resource" "executor" {
+  triggers = {
+    rollout_version = var.rollout_version
+  }
   connection {
-    host = self.public_ip
+    host = aws_instance.apache.public_ip
     user = "ububtu"
     private_key = file("~/.ssh/id_rsa")
     type = "ssh"
   }
-  provisioner "file" {
-    source = "apache.sh"
-    destination = "/tmp/apache.sh"
-  }
+
   provisioner "remote-exec" {
-    script = "/tmp/apache.sh"
+    inline = [ 
+      "sudo apt update",
+      "sudo apt install apache2 -y"
+     ]
   }
 }
-
